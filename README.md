@@ -11,24 +11,38 @@ $ npm install mongoose-load-list
 ## API
 
 ```js
-var loadList = require('mongoose-load-list');
+var defaults = require('mongoose-load-list');
 var Post = new Schema({ ... });
-Post.plugin(loadList, options);
+Post.plugin(defaults, {
+  select: 'title body user created_at',
+  populate: [
+    { path: 'user', select: 'user name' }
+  ],
+  sort: {
+    created_at: -1
+  },
+  lean: true
+});
 ```
 
 Make sure any statics you write in your model is done via function call and not with assignment. When the statics are assigned, the .load and .list will be overridden.
 
+```js
+Post.statics({
+  // static methods
+})
+```
+
 ## Options
 
-You can pass default options
+- `options.criteria` - default criteria
+- `options.sort` - default sort
+- `options.select` - default fields
+- `options.limit` - default limit
+- `options.populate` - default populated fields
+- `options.lean` - default is false
 
-- `criteria` - default criteria
-- `sort` - default sort
-- `select` - default fields
-- `limit` - default limit
-- `populate` - default populated fields
-
-These options are always applied on all the `.load` and `.list` methods. It can be overridden like below.
+The default options are always applied on all the `.load` and `.list` methods. It can be overridden like below.
 
 Example:
 
@@ -50,6 +64,7 @@ var options = {
   ],
   lean: true,   // only for list methods
 }
+yield Post.load(options);
 ```
 
 ## .load(options)
