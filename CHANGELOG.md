@@ -1,5 +1,11 @@
 ## Changelog
 
+0.4.0 / 2015-01-26
+==================
+
+  * add support to node >= 0.10.0
+  * add callback support
+
 0.3.0 / 2014-09-26
 ==================
 
